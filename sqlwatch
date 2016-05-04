@@ -1,0 +1,33 @@
+#!/bin/sh
+
+HOUR=12
+MIN=0
+echo "`date +"%b %d %Y %H:%M"` $0: sqlwatch is now operating..."
+
+SDIR=/Users/chahn/Projects/lpi-cohort-identification-service
+RSTR=""
+
+cd $SDIR; git pull 2>&1>/dev/null; cd - 2>&1>/dev/null
+
+shasum -s -c /Users/chahn/bin/shatest/insertTestData.sql.sha
+if [ $? != 0 ]; then
+  RSTR="insertTestData.sql has changed!\n"
+  shasum /Users/chahn/Projects/lpi-cohort-identification-service/cohort-management-service/src/test/resources/insertTestData.sql > /Users/chahn/bin/shatest/insertTestData.sql.sha
+fi
+
+shasum -s -c /Users/chahn/bin/shatest/recreateTables.sql.sha
+if [ $? != 0 ]; then
+  RSTR="${RSTR}recreateTables.sql has changed!\n"
+  shasum /Users/chahn/Projects/lpi-cohort-identification-service/cohort-management-service/src/test/resources/recreateTables.sql > /Users/chahn/bin/shatest/recreateTables.sql.sha
+fi
+
+if [ ! -z "$RSTR" ]; then
+  echo $RSTR | mail chahn@cogmedsys.com
+else
+  TSTR=`date | cut -d' ' -f4 | cut -d: -f1-2 | grep "^$HOUR"`
+  if [ $? == 0 ]; then 
+    if [ `echo $TSTR | cut -d: -f2 | cut -c1` == $MIN ]; then
+      echo "SQLWATCH: `date +"%b %d %Y %H:%M"`: Still Active" | mail chahn@cogmedsys.com
+    fi
+  fi
+fi
