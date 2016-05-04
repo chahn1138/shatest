@@ -9,16 +9,16 @@ RSTR=""
 
 cd $SDIR; git pull 2>&1>/dev/null; cd - 2>&1>/dev/null
 
-shasum -s -c /Users/chahn/bin/shatest/insertTestData.sql.sha
-if [ $? != 0 ]; then
-  RSTR="insertTestData.sql has changed!\n"
-  shasum /Users/chahn/Projects/lpi-cohort-identification-service/cohort-management-service/src/test/resources/insertTestData.sql > /Users/chahn/bin/shatest/insertTestData.sql.sha
-fi
-
 shasum -s -c /Users/chahn/bin/shatest/recreateTables.sql.sha
 if [ $? != 0 ]; then
-  RSTR="${RSTR}recreateTables.sql has changed!\n"
+  RSTR="recreateTables.sql has changed!\n"
   shasum /Users/chahn/Projects/lpi-cohort-identification-service/cohort-management-service/src/test/resources/recreateTables.sql > /Users/chahn/bin/shatest/recreateTables.sql.sha
+fi
+
+shasum -s -c /Users/chahn/bin/shatest/config.properties.sha
+if [ $? != 0 ]; then
+  RSTR="${RSTR}config.properties has changed!\n"
+  shasum /Users/chahn/Projects/lpi-common/lpicommon/src/main/resources/config.properties > /Users/chahn/bin/shatest/config.properties.sha
 fi
 
 if [ ! -z "$RSTR" ]; then
