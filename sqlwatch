@@ -5,7 +5,7 @@ MIN=0
 echo "`date +"%b %d %Y %H:%M"` $0: sqlwatch is now operating."
 
 SHADIR=/Users/chahn/bin/shatest/shas
-SDIR=/Users/chahn/Projects/lpi-cohort-identification-service
+SDIR=/Users/chahn/Projects/lpi-cohort-identification-service/cohort-management-service/src/test/resources
 CDIR=/Users/chahn/Projects/lpi-common/lpicommon/src/main/resources
 DDIR=/Users/chahn/Projects/lpi-resource-capacity-simulator/resource-capacity-simulator-model/sample_data
 RSTR=""
@@ -14,40 +14,40 @@ cd $SDIR; git pull 2>&1>/dev/null; cd - 2>&1>/dev/null
 shasum -s -c $SHADIR/recreateTables.sql.sha
 if [ $? != 0 ]; then
   RSTR="recreateTables.sql has changed!\n"
-  shasum /Users/chahn/Projects/lpi-cohort-identification-service/cohort-management-service/src/test/resources/recreateTables.sql > $SHADIR/recreateTables.sql.sha
+  shasum $SDIR/recreateTables.sql > $SHADIR/recreateTables.sql.sha
 fi
 shasum -s -c $SHADIR/insertTestData.sql.sha
 if [ $? != 0 ]; then
   RSTR="${RSTR}insertTestData.sql has changed!\n"
-  shasum /Users/chahn/Projects/lpi-cohort-identification-service/cohort-management-service/src/test/resources/insertTestData.sql > $SHADIR/insertTestData.sql.sha
+  shasum $SDIR/insertTestData.sql > $SHADIR/insertTestData.sql.sha
 fi
 
 cd $CDIR; git pull 2>&1>/dev/null; cd - 2>&1>/dev/null
 shasum -s -c $SHADIR/config.properties.sha
 if [ $? != 0 ]; then
   RSTR="${RSTR}config.properties has changed!\n"
-  shasum /Users/chahn/Projects/lpi-common/lpicommon/src/main/resources/config.properties > $SHADIR/config.properties.sha
+  shasum $CDIR/config.properties > $SHADIR/config.properties.sha
 fi
 
 cd $DDIR; git pull 2>&1>/dev/null; cd - 2>&1>/dev/null
 shasum -s -c $SHADIR/Plan_Balboa_Suicide.xml.sha
 if [ $? != 0 ]; then
   RSTR="${RSTR}Plan_Balboa_Suicide.xml has changed!\n"
-  shasum /Users/chahn/Projects/lpi-resource-capacity-simulator/resource-capacity-simulator-model/sample_data/Plan_Balboa_Suicide.xml > $SHADIR/Plan_Balboa_Suicide.xml.sha
+  shasum $DDIR/Plan_Balboa_Suicide.xml > $SHADIR/Plan_Balboa_Suicide.xml.sha
 fi
 
 cd $DDIR; git pull 2>&1>/dev/null; cd - 2>&1>/dev/null
 shasum -s -c $SHADIR/Scenario_Balboa_Suicide.xml.sha
 if [ $? != 0 ]; then
   RSTR="${RSTR}Scenario_Balboa_Suicide.xml has changed!\n"
-  shasum /Users/chahn/Projects/lpi-resource-capacity-simulator/resource-capacity-simulator-model/sample_data/Scenario_Balboa_Suicide.xml > $SHADIR/Scenario_Balboa_Suicide.xml.sha
+  shasum $DDIR/Scenario_Balboa_Suicide.xml > $SHADIR/Scenario_Balboa_Suicide.xml.sha
 fi
 
 cd $DDIR; git pull 2>&1>/dev/null; cd - 2>&1>/dev/null
 shasum -s -c $SHADIR/Template_Suicide.xml.sha
 if [ $? != 0 ]; then
   RSTR="${RSTR}Template_Suicide.xml has changed!\n"
-  shasum /Users/chahn/Projects/lpi-resource-capacity-simulator/resource-capacity-simulator-model/sample_data/Template_Suicide.xml > $SHADIR/Template_Suicide.xml.sha
+  shasum $DDIR/Template_Suicide.xml > $SHADIR/Template_Suicide.xml.sha
 fi
 
 if [ ! -z "$RSTR" ]; then
